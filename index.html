@@ -382,41 +382,108 @@
       // 🎵 Romantic Music Player
 
 // Create audio element
+const songs = [
+    { name: "Perfect - Ed Sheeran", src: "./photos/perfect_ed_sheeran.mp3" },
+    { name: "All of Me - John Legend", src: "./photos/all_of_me.mp3" },
+    { name: "Until I Found You", src: "./photos/until_i_found_you.mp3" }
+];
+
+// 🎧 Create audio element
 const audio = document.createElement('audio');
-
-// 🔥 PUT YOUR SONG LINK HERE
-audio.src = "photos/Michael_Jackson_Love_Never_Felt_So_Good_Ringtone_(by Fringster.com).mp3"; 
-audio.loop = true; // repeat song
+audio.loop = true;
 audio.preload = "auto";
-
+audio.src = songs[0].src;
 document.body.appendChild(audio);
 
+// 🎶 Create dropdown selector
+const songSelector = document.createElement('select');
+songSelector.style.position = "fixed";
+songSelector.style.bottom = "110px";
+songSelector.style.right = "35px";
+songSelector.style.padding = "10px 15px";
+songSelector.style.borderRadius = "12px";
+songSelector.style.border = "none";
+songSelector.style.background = "rgba(255,255,255,0.9)";
+songSelector.style.backdropFilter = "blur(10px)";
+songSelector.style.boxShadow = "0 5px 20px rgba(0,0,0,0.2)";
+songSelector.style.fontSize = "14px";
+songSelector.style.zIndex = "9999";
+songSelector.style.cursor = "pointer";
 
-// Create music button
+songs.forEach((song, index) => {
+    const option = document.createElement('option');
+    option.value = index;
+    option.textContent = song.name;
+    songSelector.appendChild(option);
+});
+
+document.body.appendChild(songSelector);
+
+// Change song
+songSelector.addEventListener('change', function () {
+    audio.src = songs[this.value].src;
+    if (isPlaying) audio.play();
+});
+
+
+// 💎 Create Beautiful Toggle Button
 const musicBtn = document.createElement('button');
-musicBtn.innerHTML = '<i class="fas fa-music"></i>';
-musicBtn.className =
-'fixed bottom-4 right-4 bg-valentine-rose text-white p-4 rounded-full shadow-lg hover:bg-valentine-red transition-all duration-300 z-50';
+musicBtn.innerHTML = `<i class="fas fa-music"></i>`;
 
-musicBtn.title = 'Play Romantic Music';
+musicBtn.style.position = "fixed";
+musicBtn.style.bottom = "30px";
+musicBtn.style.right = "30px";
+musicBtn.style.width = "75px";
+musicBtn.style.height = "75px";
+musicBtn.style.borderRadius = "50%";
+musicBtn.style.border = "none";
+musicBtn.style.cursor = "pointer";
+musicBtn.style.background = "linear-gradient(135deg, #ff4d6d, #ff758f)";
+musicBtn.style.boxShadow = "0 10px 30px rgba(255, 77, 109, 0.6)";
+musicBtn.style.display = "flex";
+musicBtn.style.alignItems = "center";
+musicBtn.style.justifyContent = "center";
+musicBtn.style.color = "white";
+musicBtn.style.fontSize = "24px";
+musicBtn.style.transition = "all 0.3s ease";
+musicBtn.style.zIndex = "9999";
+
 document.body.appendChild(musicBtn);
 
 
-// Toggle play / pause
+// ✨ Pulse Animation
+let pulseInterval;
+
+function startPulse() {
+    pulseInterval = setInterval(() => {
+        musicBtn.style.boxShadow = "0 0 40px rgba(255, 0, 90, 1)";
+        setTimeout(() => {
+            musicBtn.style.boxShadow = "0 0 20px rgba(255, 0, 90, 0.6)";
+        }, 300);
+    }, 800);
+}
+
+function stopPulse() {
+    clearInterval(pulseInterval);
+}
+
+
+// 🎵 Toggle Logic
 let isPlaying = false;
 
 musicBtn.addEventListener('click', function () {
 
     if (!isPlaying) {
         audio.play();
-        musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        this.classList.add('bg-valentine-red');
+        musicBtn.innerHTML = `<i class="fas fa-pause"></i>`;
+        musicBtn.style.transform = "scale(1.1)";
+        startPulse();
     } 
-    
     else {
         audio.pause();
-        musicBtn.innerHTML = '<i class="fas fa-music"></i>';
-        this.classList.remove('bg-valentine-red');
+        musicBtn.innerHTML = `<i class="fas fa-music"></i>`;
+        musicBtn.style.transform = "scale(1)";
+        stopPulse();
     }
 
     isPlaying = !isPlaying;
@@ -426,3 +493,4 @@ musicBtn.addEventListener('click', function () {
 </body>
 
 </html>
+
